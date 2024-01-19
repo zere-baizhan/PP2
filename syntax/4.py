@@ -1,1 +1,1 @@
-print(56+4)
+print("mrow mrow meow")
