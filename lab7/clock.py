@@ -1,0 +1,53 @@
+import pygame
+import datetime
+
+pygame.init()
+screen_width, screen_height = 1400, 1000
+screen = pygame.display.set_mode((screen_width, screen_height))
+clock = pygame.time.Clock()
+
+def blitRotate(surf, image, pos, originPos, angle):
+ 
+    image_rect = image.get_rect(center=originPos)
+
+    rotated_image = pygame.transform.rotate(image, angle)
+    rotated_image_rect = rotated_image.get_rect(center=image_rect.center)
+    rotated_image_rect.center = pos
+    surf.blit(rotated_image, rotated_image_rect)
+
+
+mainclock = pygame.image.load("mainclock.png")
+minute = pygame.image.load("rightarm.png")
+seconds = pygame.image.load("leftarm.png")
+
+mainclockw, mainclockh = mainclock.get_size()
+
+clockcenter = (screen_width // 2, screen_height // 2)
+
+coordinate_center = (700,530)
+
+done = False
+while not done:
+    clock.tick(60)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+
+    current_time = datetime.datetime.now()
+    
+    
+    curr_seconds = current_time.second
+    angle_hours = -(curr_seconds / 60) * 360  
+
+    curr_min = current_time.minute
+    angle_minutes = -(curr_min / 60) * 360  
+
+    screen.blit(mainclock, (0, 0))  
+
+    blitRotate(screen, minute, coordinate_center, coordinate_center, angle_hours)
+    
+    blitRotate(screen, seconds, coordinate_center, coordinate_center, angle_minutes)
+    
+    pygame.display.flip()
+
+pygame.quit()
